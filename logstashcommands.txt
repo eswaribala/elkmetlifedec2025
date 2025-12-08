@@ -1,0 +1,5 @@
+#access logstash
+docker container ls -a
+#findout logstash container id
+docker exec -it <logstashcontainerid> /bin/bash
+/opt/logstash/bin/logstash --path.data /tmp/logstash/data -e 'input { stdin { } } output { stdout {} }'

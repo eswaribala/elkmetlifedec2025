@@ -1,5 +1,8 @@
 #to access es
 https://localhost:9200
 
+#to access kibana
+http://localhost:5601
+
 #to see all the existing indexes
 https://localhost:9200/_cat/indices?v

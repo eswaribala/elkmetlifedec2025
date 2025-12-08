@@ -2,4 +2,14 @@
 docker container ls -a
 #findout logstash container id
 docker exec -it <logstashcontainerid> /bin/bash
+#open another cmd window with administrator privilege
+#change directory to training folder
+cd c:/training
+#after that ensure files are n training folder then run the following commands
+docker cp stockdata.csv  <logstashcontainerid>:/usr/share/logstash/ingest_data/
+docker cp stockdata.conf  <logstashcontainerid>:/usr/share/logstash/config
+
+
+
+
 /opt/logstash/bin/logstash --path.data /tmp/logstash/data -e 'input { stdin { } } output { stdout {} }'

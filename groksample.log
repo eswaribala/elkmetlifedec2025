@@ -1,0 +1,10 @@
+2020-10-11T09:49:35Z INFO 10.0.251.84 variable server value is tomcat
+2020-03-14T22:50:34Z ERROR 10.0.251.85 cannot find the requested resource
+2020-01-02T14:58:40Z INFO 10.0.251.86 initializing the bootup
+2020-06-04T06:56:04Z DEBUG 10.7.251.84 initializing checksum
+2020-05-07T03:07:11Z INFO 10.6.251.84 variable server value is tomcat
+2020-05-07T03:07:11Z INFO 10.5.251.84 variable server value is tomcat
+2021-07-07T03:07:11Z INFO 10.4.251.84 variable server value is Apache
+2022-07-07T03:07:11Z INFO 10.3.251.84 variable server value is IIS
+2023-07-07T03:07:11Z INFO 10.3.251.84 variable server value is GlassFish
+2024-07-07T03:07:11Z INFO 11.3.251.84 variable server value is GlassFish

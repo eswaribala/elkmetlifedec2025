@@ -1,0 +1,48 @@
+PUT /customersv1
+{
+ 
+  "mappings": {
+"properties": {
+  "customer":{
+    "properties": {
+      "customerId":{
+        "type":"integer"
+      },
+      "name":{
+        "properties":{
+          "firstName":{
+            "type":"text"
+          },
+          "middleName":{
+            "type":"text"
+          },
+          "lastName":{
+            "type":"text"
+          }
+        }
+      },
+      "email":{
+        "type":"text"
+      },
+      "contactNo":{
+        "type":"long"
+      }
+    }
+  }
+  
+}
+}
+}
+
+===============================
+POST /customersv1/_doc/1
+{
+  "customerId":1,
+  "name":{
+    "firstName":"Parameswari",
+    "middleName":"",
+    "lastName":"Bala"
+  },
+  "email":"param@gmail.com",
+  "contactNo":9952032862
+}

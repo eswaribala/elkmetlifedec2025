@@ -64,10 +64,16 @@ PUT products/_doc/1
     "cost" : 45000,
     "expiry-date" : "2024-12-12"
 }
-
-
-
 #alternative approach
+POST /policyholders/_update/2
+{
+  "doc":{
+    "phoneNo": 68952032876
+  }
+}
+
+
+
 POST /products/_update/1
 {
   "script":"ctx._source.cost+=1500"

@@ -56,3 +56,15 @@ PUT _ingest/pipeline/gender_enum_only
   ]
 }
 ------------------------------------
+POST /drivers/_doc/2?pipeline=gender_enum_only
+{
+  "name":"Jay",
+  "relationWithInsured":"driver",
+  "address":"chennai",
+  "contactNo":7890678990,
+  "dob":"1980-12-01",
+  "gender":"M",
+  "classOfVehicle": "LMV",
+  "driverType":"Permanent"
+}
+==========================

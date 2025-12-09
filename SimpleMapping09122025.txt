@@ -1,0 +1,40 @@
+PUT /drivers
+{
+  "mappings": {
+"properties": {
+  "driver":{
+"properties": {
+  "name":{
+    "type":"text"
+   
+  },
+  "relationWithInsured":{
+    "type":"text"
+  },
+  "address":{
+    "type":"text"
+  },
+  "contactNo":{
+    "type":"long"
+  },
+  "dob":{
+    "type":"date"
+  },
+  "gender":{
+    "type": "keyword",
+    "ignore_above": 1
+  },
+  "classOfVehicle":{
+    "type":"keyword",
+     "ignore_above": 50
+  },
+  "driverType":{
+    "type":"keyword"
+  }
+  
+}
+  }
+}
+  }
+  
+}

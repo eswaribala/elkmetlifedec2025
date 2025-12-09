@@ -38,3 +38,21 @@ PUT /drivers
   }
   
 }
+-------------------------
+PUT _ingest/pipeline/gender_enum_only
+{
+  "processors": [
+    {
+      "script": {
+        "source": """
+        def allowed=['M','F','O'];
+        if (ctx.gender != null && !allowed.contains(ctx.gender)){
+          throw new IllegalArgumentException('Invalid gender, Allowed to use only M,F or O');
+        }
+      
+      """
+      }
+    }
+  ]
+}
+------------------------------------

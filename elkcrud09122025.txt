@@ -64,3 +64,12 @@ POST /policyholders/_doc/2
 
 
 DELETE /policyholders/_doc/1
+
+#partial update
+POST /policyholders/_update/2
+{
+  "doc":{
+    "phoneNo": 68952032876
+  }
+}
+

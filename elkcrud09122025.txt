@@ -1,0 +1,66 @@
+PUT /policyholders
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 2
+  }
+}
+
+POST /policyholders/_doc/1
+{
+  "policyNo":3485548365,
+  "name":"Parameswari",
+  "fromDate":"2020-01-01",
+  "toDate":"2027-01-01",
+  "gender":"Female",
+  "address":"Chennai",
+  "email":"param@gmail.com",
+  "phoneNo":9952032876
+}
+
+GET /policyholders/_doc/1
+
+
+POST /policyholders/_doc/1
+{
+  "policyNo":3485548365,
+  "name":"Parameswari",
+  "fromDate":"2020-01-01",
+  "toDate":"2027-01-01",
+  "gender":"Female",
+  "address":"Chennai",
+  "email":"param@gmail.com",
+  "phoneNo":9952032876,
+  "dob":"1970-12-02"
+}
+
+
+
+POST /policyholders/_doc/1
+{
+  "policyNo":3485548365,
+  "name":"Parameswari",
+  "fromDate":"2020-01-01",
+  "toDate":"2027-01-01",
+  "gender":"Female",
+  "address":"Chennai",
+  "email":"param@gmail.com",
+  "phoneNo":9952032876,
+  "dob":"1970-12-02"
+}
+
+POST /policyholders/_doc/2
+{
+  "policyNo":3485548366,
+  "name":"Vignesh",
+  "fromDate":"2021-01-01",
+  "toDate":"2028-01-01",
+  "gender":"Male",
+  "address":"Chennai",
+  "email":"viki@gmail.com",
+  "phoneNo":99520328776,
+  "dob":"1995-12-07"
+}
+
+
+DELETE /policyholders/_doc/1

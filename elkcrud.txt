@@ -65,13 +65,7 @@ PUT products/_doc/1
     "expiry-date" : "2024-12-12"
 }
 
-#alternative approach
-POST /products/_doc/1/_update
-{
-  "doc":{
-    "name":"notebook"
-  }
-}
+
 
 #alternative approach
 POST /products/_update/1

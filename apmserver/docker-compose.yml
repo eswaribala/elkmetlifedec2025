@@ -1,0 +1,31 @@
+services:
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:8.7.1
+    container_name: apm-server
+    #depends_on:
+      #- es01
+      #- kibana
+    environment:
+      - SERVER_NAME=APM
+
+      - APM_SERVER_KIBANA_ENABLED=true
+      - APM_SERVER_KIBANA_HOST=kibana:5601
+
+      - OUTPUT_ELASTICSEARCH_HOSTS=["https://es01:9200"]
+      - OUTPUT_ELASTICSEARCH_USERNAME=elastic
+      - OUTPUT_ELASTICSEARCH_PASSWORD=changeme
+      - OUTPUT_ELASTICSEARCH_SSL_ENABLED=true
+      - OUTPUT_ELASTICSEARCH_SSL_CERTIFICATE_AUTHORITIES=/usr/share/ca.crt
+
+      - APM_SERVER_DATA_STREAMS_ENABLED=true
+
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+      - ./ca.crt:/usr/share/ca.crt:ro
+    ports:
+      - "8200:8200"
+
+networks:
+  default:
+    name: elastic
+    external: true

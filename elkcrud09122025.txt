@@ -78,3 +78,24 @@ POST /policyholders/_update/2
 {
  "script": "ctx._source.bonus+=(ctx._source.insuredAmount*0.10)"
 }
+#upsert
+#if doc1 eists insuredAmount and Bonus will be added else it will create new doc eith policyno to dob
+POST /policyholders/_update/1
+{
+"doc": {
+"insuredAmount": 0,
+"bonus":0
+},
+"upsert": {
+ "policyNo":3485548365,
+  "name":"Parameswari",
+  "fromDate":"2020-01-01",
+  "toDate":"2027-01-01",
+  "gender":"Female",
+  "address":"Chennai",
+  "email":"param@gmail.com",
+  "phoneNo":9952032876,
+  "dob":"1970-12-02"
+  
+}
+}

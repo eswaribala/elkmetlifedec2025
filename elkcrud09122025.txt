@@ -73,3 +73,8 @@ POST /policyholders/_update/2
   }
 }
 
+#bonus cal
+POST /policyholders/_update/2
+{
+ "script": "ctx._source.bonus+=(ctx._source.insuredAmount*0.10)"
+}

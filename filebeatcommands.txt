@@ -1,1 +1,3 @@
 filebeat modules list --path.data /tmp/logstash/data -strict.perms=false
+filebeat modules enable mysql --path.data /tmp/logstash/data -strict.perms=false
+

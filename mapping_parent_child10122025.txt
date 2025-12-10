@@ -68,3 +68,21 @@ PUT /policyholders_vehicles
   
   
 }
+----------------------
+POST /policyholders_vehicles/_doc/1234?routing=1234
+{
+  "policyNo":1234,
+  "name":{
+    "firstName":"Parameswari",
+    "middleName":"",
+    "lastName":"Bala"
+  },
+  "contactNo":99876890,
+  "email":"param@gmail.com",
+  "dob":"1970-12-02",
+  "policyholder_vehicle": {
+    "name": "policyHolder"
+  }
+  
+}
+=========================

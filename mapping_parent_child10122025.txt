@@ -85,4 +85,57 @@ POST /policyholders_vehicles/_doc/1234?routing=1234
   }
   
 }
+
+POST /policyholders_vehicles/_doc/1235?routing=1235
+{
+  "policyNo":1235,
+  "name":{
+    "firstName":"Vignesh",
+    "middleName":"",
+    "lastName":"Bala"
+  },
+  "contactNo":99876891,
+  "email":"viki@gmail.com",
+  "dob":"1995-12-07",
+  "policyholder_vehicle": {
+    "name": "policyHolder"
+  }
+  
+}
+
+
+POST /policyholders_vehicles/_doc/2001?routing=1234
+{
+  "registrationNo":"TN-01-123456",
+  "make":"hyundai",
+  "model":"i20",
+  "color":"blue",
+  "policyholder_vehicle": {
+    "name": "vehicle",
+    "parent": 1234
+  }
+}
+
+POST /policyholders_vehicles/_doc/2002?routing=1234
+{
+  "registrationNo":"TN-04-123457",
+  "make":"Maruti",
+  "model":"estilo",
+  "color":"red",
+  "policyholder_vehicle": {
+    "name": "vehicle",
+    "parent": 1234
+  }
+}
+POST /policyholders_vehicles/_doc/2003?routing=1235
+{
+  "registrationNo":"TN-12-133457",
+  "make":"Mahindra",
+  "model":"XUV700",
+  "color":"black",
+  "policyholder_vehicle": {
+    "name": "vehicle",
+    "parent": 1235
+  }
+}
 =========================

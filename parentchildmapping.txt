@@ -1,0 +1,106 @@
+PUT insurance-index
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "ins_join": {
+        "type": "join",
+        "relations": {
+          "policy": "claim"
+        }
+      },
+      "policyNumber": { "type": "keyword" },
+      "customerName": { "type": "text" },
+      "productType": { "type": "keyword" },      // e.g. MOTOR, HEALTH
+      "premium": { "type": "double" },
+      "claimId": { "type": "keyword" },
+      "claimAmount": { "type": "double" },
+      "claimStatus": { "type": "keyword" },
+      "incidentDate": { "type": "date" }
+    }
+  }
+}
+PUT insurance-index/_doc/POLICY-1001?routing=POLICY-1001
+{
+  "policyNumber": "POLICY-1001",
+  "customerName": "Ravi Kumar",
+  "productType": "MOTOR",
+  "premium": 15000,
+  "ins_join": "policy"
+}
+PUT insurance-index/_doc/POLICY-1002?routing=POLICY-1002
+{
+  "policyNumber": "POLICY-1002",
+  "customerName": "Anita Sharma",
+  "productType": "HEALTH",
+  "premium": 28000,
+  "ins_join": "policy"
+}
+PUT insurance-index/_doc/CLAIM-1?routing=POLICY-1001
+{
+  "claimId": "CLAIM-1",
+  "claimAmount": 50000,
+  "claimStatus": "APPROVED",
+  "incidentDate": "2025-01-10",
+  "ins_join": {
+    "name": "claim",
+    "parent": "POLICY-1001"
+  }
+}
+PUT insurance-index/_doc/CLAIM-2?routing=POLICY-1001
+{
+  "claimId": "CLAIM-2",
+  "claimAmount": 10000,
+  "claimStatus": "REJECTED",
+  "incidentDate": "2025-02-15",
+  "ins_join": {
+    "name": "claim",
+    "parent": "POLICY-1001"
+  }
+}
+PUT insurance-index/_doc/CLAIM-3?routing=POLICY-1002
+{
+  "claimId": "CLAIM-3",
+  "claimAmount": 75000,
+  "claimStatus": "PENDING",
+  "incidentDate": "2025-03-05",
+  "ins_join": {
+    "name": "claim",
+    "parent": "POLICY-1002"
+  }
+}
+GET insurance-index/_search
+{
+  "query": {
+    "has_child": {
+      "type": "claim",
+      "query": {
+        "range": {
+          "claimAmount": { "gt": 40000 }
+        }
+      }
+    }
+  }
+}
+GET insurance-index/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "policy",
+      "query": {
+        "term": {
+          "productType": "MOTOR"
+        }
+      }
+    }
+  }
+}
+POST insurance-index/_update/CLAIM-3?routing=POLICY-1002
+{
+  "doc": {
+    "claimStatus": "APPROVED"
+  }
+}

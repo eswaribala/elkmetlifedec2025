@@ -127,6 +127,38 @@ PUT _index_template/composed_claim_template
   ]
 }
 
+PUT claims-medical
 
+GET claims-medical/_settings
+GET claims-medical/_mapping
+
+
+
+POST claims-medical/_doc/1
+{
+  "locationId":44,
+  "locationName":"Chennai",
+  "coords":{
+    "lat":80.2,
+    "lon":"108.4"
+  }
+}
+
+
+
+POST claims-medical/_doc/2
+{
+  "locationId":80,
+  "locationName":"Bangalore",
+  "coords":[ 71.34, 41.12 ]
+}
+
+
+POST claims-medical/_doc/3
+{
+  "locationId":33,
+  "locationName":"Mumbai",
+  "coords":"41.12,-71.34"
+}
 
 

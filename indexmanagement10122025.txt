@@ -1,0 +1,132 @@
+PUT _ilm/policy/ins_hot_warm_cold_frozen
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "min_age": "0ms",
+        "actions": {
+          "set_priority": {
+            "priority": 100
+          },
+          "rollover": {
+            "max_age": "7d",
+            "max_docs": 1000,
+            "max_size": "50gb"
+          }
+        }
+      },
+      "warm": {
+        "min_age": "7d",
+        "actions": {
+          "set_priority": {
+            "priority": 50
+          },
+          "allocate": {
+            "number_of_replicas": 1,
+            "include": {
+              "_name": "",
+              "_ip": ""
+            },
+            "exclude": {
+              "_name": "",
+              "_ip": ""
+            },
+            "require": {
+              "_name": "",
+              "_ip": ""
+            }
+          },
+          "shrink": {
+            "number_of_shards": 1
+          },
+          "forcemerge": {
+            "max_num_segments": 1
+          }
+        }
+      },
+      "cold": {
+        "min_age": "7d",
+        "actions": {
+          "set_priority": {
+            "priority": 20
+          },
+          "freeze": {},
+          "allocate": {
+            "number_of_replicas": 1,
+            "include": {
+              "_name": "",
+              "_ip": ""
+            },
+            "exclude": {
+              "_name": "",
+              "_ip": ""
+            },
+            "require": {
+              "_name": "",
+              "_ip": ""
+            }
+          }
+        }
+      },
+      "delete": {
+        "min_age": "365d",
+        "actions": {
+          "delete": {}
+        }
+      }
+     
+      
+      
+    }
+  }
+}
+
+GET _ilm/policy/ins_hot_warm_cold_frozen
+
+PUT /_component_template/ins_settings_component_template
+{
+  "template": {
+    "settings": {
+"number_of_shards": 2,
+"number_of_replicas": 1,
+ "index.lifecycle.name": "ins_hot_warm_cold_frozen",      
+      "index.lifecycle.rollover_alias": "hot_warm_cold_frozen_policy" 
+    }
+  }
+}
+
+
+PUT /_component_template/ins_mappings_component_template
+{
+  "template": {
+    "mappings": {
+"properties": {
+  "locationId":{
+    "type": "integer"
+  },
+  "locationName":{
+    "type": "text"
+  },
+  "coords":{
+    "type":"geo_point"
+  }
+}
+    }
+  }
+}
+
+PUT _index_template/composed_claim_template
+{
+  "index_patterns": [
+    "claims-*"
+    ],
+     "composed_of": [
+    "ins_settings_component_template",
+    "ins_mappings_component_template"
+   
+  ]
+}
+
+
+
+

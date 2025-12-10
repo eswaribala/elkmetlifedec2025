@@ -1,0 +1,22 @@
+services:
+  syslog:
+    image: rsyslog/syslog_appliance_alpine
+    container_name: syslog
+    ports:
+      - "5514:514/udp"        # host port 5514 -> container 514/udp
+    volumes:
+      - ./rsyslog/rsyslog.conf:/etc/rsyslog.conf
+      - ./logs:/var/log
+    restart: unless-stopped
+
+  app:
+    image: alpine
+    container_name: app-logger
+    command: ["/bin/sh", "-c", "while true; do echo \"Hello from app $(date)\"; sleep 5; done"]
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://host.docker.internal:5514"
+        tag: "demo-app"
+    depends_on:
+      - syslog

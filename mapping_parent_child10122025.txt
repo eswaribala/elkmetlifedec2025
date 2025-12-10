@@ -1,0 +1,70 @@
+PUT /policyholders_vehicles
+{
+  "settings": {
+"number_of_shards": 1,
+"number_of_replicas": 0
+  },
+  "mappings": {
+"properties": {
+  "policyHolder":{
+    "properties": {
+      "policyNo":{
+        "type": "long"
+      },
+      "name":{
+        "properties":{
+          "firstName":{
+            "type":"text"
+          },
+          "middleName":{
+            "type":"text"
+          },
+          "lastName":{
+            "type":"text"
+          }
+        }
+      },
+      "email":{
+        "type":"text"
+      },
+      "contactNo":{
+        "type":"long"
+      },
+      "dob":{
+        "type":"date",
+        "format":"yyyy-MM-dd || epoch_millis"
+      }
+      
+      
+    }
+  },
+  "vehicle":{
+    "properties": {
+      "registrationNo":{
+        "type":"text"
+      },
+      "make":{
+        "type":"text"
+      },
+      "color":{
+        "type":"text"
+      },
+      "model":{
+        "type":"text"
+      }
+    }
+  },
+  
+  "policyholder_vehicle":{
+    "type":"join",
+    "relations":{
+      "policyHolder":"vehicle"
+    }
+  }
+}
+  }
+  
+  
+  
+  
+}

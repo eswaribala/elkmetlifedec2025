@@ -1,0 +1,140 @@
+#retrieve Default Policy
+GET _ilm/policy
+#explain policy
+GET datastream-*/_ilm/explain
+#create new ilm policy
+PUT _ilm/policy/hot-warm-cold-delete-60days
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_size":"50gb",
+            "max_age":"30d"
+          },
+          "set_priority": {
+            "priority": 50
+          }
+        }
+      },
+      "warm": {
+        "min_age": "7d",
+        "actions": {
+          "forcemerge": {
+            "max_num_segments": 1
+          },
+          "shrink": {
+            "number_of_shards": 1
+          },
+          "allocate": {
+            "require": {
+              "data": "warm"
+            }
+          },
+          "set_priority": {
+            "priority": 25
+          }
+        }
+      },
+      "cold": {
+        "min_age": "30d",
+        "actions": {
+          "set_priority": {
+            "priority": 0
+          },
+          "freeze": {},
+          "allocate": {
+            "require": {
+              "data": "cold"
+            }
+          }
+        }
+      },
+      "delete": {
+        "min_age": "60d",
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+#retrieve policy
+GET _ilm/policy/hot-warm-cold-delete-60days
+
+PUT _component_template/settings_component_template
+{
+  "template":{
+    "settings":{
+      "number_of_shards":5,
+      "number_of_replicas":2,
+      "index.lifecycle.name": "hot-warm-cold-delete-60days",      
+      "index.lifecycle.rollover_alias": "hot-warm-cold-delete" 
+    }
+  }
+}
+
+PUT _component_template/mappings_component_template
+{
+  "template": {
+    "mappings": {
+      "properties": {
+        "work_year": {
+          "type": "integer"
+          },
+	"exp_level": {
+          "type": "text"
+          },
+	"emp_type": {
+          "type": "text"
+          },
+	"salary": {
+          "type": "integer"
+          }
+
+      }
+    }
+  }
+}
+/**
+optional
+PUT _component_template/aliases_component_template
+{
+  "template": {
+    "aliases": {
+      "all_orders": {},
+      "sales_orders":{}
+    }
+  }
+}
+*/
+PUT _index_template/composed_salary_template
+{
+  "index_patterns": [
+    "*salary"
+  ],
+  "priority": 500,
+  "composed_of": [
+    "settings_component_template",
+    "mappings_component_template"
+   
+  ]
+}
+
+
+#create index
+
+PUT /emp_salary_ibm
+#retrieve document
+GET /emp_salary_ibm
+
+POST emp_salary_ibm/_doc/1
+{
+  "work_year":1,
+  "exp_level":"2",
+  "emp_type":"SE",
+  "salary": 70000
+}
+
+GET emp_salary_cts/_doc/1

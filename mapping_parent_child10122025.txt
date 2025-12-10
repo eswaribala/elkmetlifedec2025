@@ -139,3 +139,31 @@ POST /policyholders_vehicles/_doc/2003?routing=1235
   }
 }
 =========================
+
+GET /policyholders_vehicles/_search 
+{
+   "query":{
+      "has_parent":{
+         "parent_type":"policyHolder",
+         "query":{
+            "match":{
+               "policyNo":1235
+            }
+         }
+      }
+   }
+}
+
+
+GET policyholders_vehicles/_search
+{
+  "query": {
+    "has_child": {
+      "type": "vehicle",
+      "query": {
+        "match_all": {}
+      }
+     
+    }
+  }
+}

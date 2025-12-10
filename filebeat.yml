@@ -1,0 +1,40 @@
+filebeat.inputs:
+- type: filestream
+  id: default-filestream
+  paths:
+    - ingest_data/*.log
+    - /usr/share/demo/*.log
+- type: filestream
+  id: syslog-files
+  enabled: true
+  paths:
+    - /var/log/syslog.log
+  parsers:
+    - syslog:
+       format: auto
+  tags: ["syslog"]
+filebeat.config.modules:
+  enabled: true
+  path: ${path.config}/modules.d/*.yml
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+processors:
+- add_docker_metadata: ~
+
+setup.kibana:
+  host: ${KIBANA_HOSTS}
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD} 
+
+#output.elasticsearch:
+  #hosts: ${ELASTIC_HOSTS}
+  #username: ${ELASTIC_USER}
+  #password: ${ELASTIC_PASSWORD}
+  #ssl.enabled: true
+  #ssl.certificate_authorities: "certs/ca/ca.crt"
+output.logstash:
+   hosts: ["logstash01:5044"]

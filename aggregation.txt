@@ -216,6 +216,42 @@ GET /order/_search
 }
 
 ======================================
+GET /order_new/_search
+{
+  "size": 0, 
+  "aggregations": { 
+  "responses.counts": { 
+    "scripted_metric": { 
+      "init_script": "state.responses = ['shop':0L,'web':0L,'other':0L]", 
+      "map_script": """ 
+        def code = doc['sales_channel'].value;
+        if (code == 'web') {
+          state.responses.web += 1 ;
+        } else if(code == 'store') {
+          state.responses.shop += 1;
+        } else {
+          state.responses.other += 1;
+        }
+        """,
+      "combine_script": "state.responses", 
+      "reduce_script": """ 
+        def counts = ['shop': 0L, 'web': 0L, 'other': 0L];
+        for (responses in states) {
+          counts.other += responses['other'];
+          counts.web += responses['web'];
+          counts.shop += responses['shop'];
+        }
+        return counts;
+        """
+      }
+    }
+  
+}
+}
+
+
+
+========================================
 
 curl -XPUT "http://localhost:9200/traffic_stats/" -H "Content-Type: application/json" -d '{
    "mappings":{

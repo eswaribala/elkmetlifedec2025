@@ -109,3 +109,32 @@ GET metrics-apm.app.vehicleapi_observability_demo-default/_search
 }
 
 ===============================
+
+GET metrics-apm.app.vehicleapi_observability_demo-default/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "range": {
+            "jvm_memory_used": {
+              "gte": 10757632
+              
+            }
+          }},
+          {
+"range": {
+              "jvm_memory_used": {
+                "gte": 10757632,
+                "boost": 2
+              }
+            }
+          }
+        
+
+      ]
+    }
+  }
+}
+
+

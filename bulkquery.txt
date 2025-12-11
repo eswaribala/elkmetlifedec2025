@@ -1,5 +1,5 @@
 #elastic 8 -- use ubuntu 8
 docker cp elastic-stack-docker-part-one-main-es01-1:/usr/share/elasticsearch/config/certs/ca/ca.crt .
-curl --cacert /tmp/ca.crt -u elastic:changeme https://localhost:9200
+curl --cacert ca.crt -u elastic:changeme https://localhost:9200
 
 curl --cacert ca.crt -u elastic:changeme -H "Content-Type: application/x-ndjson" -XPOST "https://localhost:9200/orders/_bulk?pretty" --data-binary @orders-bulk.json

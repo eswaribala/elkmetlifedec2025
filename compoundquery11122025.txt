@@ -26,3 +26,40 @@ GET metrics-apm.app.vehicleapi_observability_demo-default/_search
   }
 }
 }
+=======================================
+GET metrics-apm.app.vehicleapi_observability_demo-default/_search
+{
+"query": {
+  "bool": {
+    "should": [
+      { 
+"range": {
+          "process_cpu_usage": {
+            "gte": 0.001,
+            "lte": 0.2
+          }
+        }
+        
+      },
+            { 
+"range": {
+                "jvm.memory.heap.used": {
+                  "gte": 10000,
+                  "lte": 1000000000
+                }
+              }
+              
+            } 
+      
+    ],
+    "must": [
+      {
+        "exists": {
+          "field": "host.ip"
+        }
+      }
+    ]
+  }
+}
+}
+===========================================================

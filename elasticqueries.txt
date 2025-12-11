@@ -1,3 +1,255 @@
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "match" : {
+            "title" : "in action"
+        }
+    },
+    "size": 2,
+    "from": 0,
+    "_source": [ "title", "summary", "publish_date" ],
+    "highlight": {
+        "fields" : {
+            "title" : {}
+        }
+    }
+}
+============================================
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "multi_match" : {
+            "query" : "elasticsearch guide",
+            "fields": ["title", "summary"]
+        }
+    },
+    "_source": ["title", "summary", "publish_date"]
+}
+--------------------------------------------------------------
+
+POST /bookdb_index/book/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ],
+          "must": { "match": { "authors": "clinton gormely" }} 
+        }
+      },
+      "must_not": { "match": {"authors": "radu gheorge" }}
+    }
+  }
+}
+==========================================
+fuzzy query
+POST /bookdb_index/book/_search
+{
+  "query": {
+    "bool": {
+      "must": {
+        "bool" : { 
+          "should": [
+            { "match": { "title": "Elasticsearch" }},
+            { "match": { "title": "Solr" }} 
+          ],
+          "must": { "match": { "authors": "clinton gormely" }} 
+        }
+      },
+      "must_not": { "match": {"authors": "radu gheorge" }}
+    }
+  }
+}
+---------------------------------------------------------
+wild card query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "wildcard" : {
+            "authors" : "t*"
+        }
+    },
+    "_source": ["title", "authors"],
+    "highlight": {
+        "fields" : {
+            "authors" : {}
+        }
+    }
+}
+===========================================
+Regexp query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "regexp" : {
+            "authors" : "t[a-z]*y"
+        }
+    },
+    "_source": ["title", "authors"],
+    "highlight": {
+        "fields" : {
+            "authors" : {}
+        }
+    }
+}
+------------------------------------------
+Match Phrase query
+The match phrase query requires that all the terms
+ in the query string be present in the document, 
+be in the order specified in the query 
+string and be close to each other.
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "multi_match" : {
+            "query": "search engine",
+            "fields": ["title", "summary"],
+            "type": "phrase",
+            "slop": 3
+        }
+    },
+    "_source": [ "title", "summary", "publish_date" ]
+}
+-----------------------------------------------------
+Match phrase prefix
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "match_phrase_prefix" : {
+            "summary": {
+                "query": "search en",
+                "slop": 3,
+                "max_expansions": 10
+            }
+        }
+    },
+    "_source": [ "title", "summary", "publish_date" ]
+}
+--------------------------------------------------
+terms query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "term" : {
+            "publisher": "manning"
+        }
+    },
+    "_source" : ["title","publish_date","publisher"]
+}
+----------------------------------------
+Terms query sorted
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "term" : {
+            "publisher": "manning"
+        }
+    },
+    "_source" : ["title","publish_date","publisher"],
+    "sort": [
+        { "publish_date": {"order":"desc"}}
+    ]
+}
+------------------------------------------
+
+Range Query
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "range" : {
+            "publish_date": {
+                "gte": "2015-01-01",
+                "lte": "2015-12-31"
+            }
+        }
+    },
+    "_source" : ["title","publish_date","publisher"]
+}
+--------------------------------------------
+
+Filtered Bool Query
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "filtered": {
+            "query" : {
+                "multi_match": {
+                    "query": "elasticsearch",
+                    "fields": ["title","summary"]
+                }
+            },
+            "filter": {
+                "range" : {
+                    "num_reviews": {
+                        "gte": 20
+                    }
+                }
+            }
+        }
+    },
+    "_source" : ["title","summary","publisher", "num_reviews"]
+}
+------------------------------------------
+POST /bookdb_index/book/_search
+{
+"query": {
+    "bool" : {
+       "must" : {
+                "multi_match": {
+                    "query": "elasticsearch",
+                    "fields": ["title","summary"]
+                }
+            },
+            "filter": {
+                "range" : {
+                    "num_reviews": {
+                        "gte": 20
+                    }
+                }
+            },
+            
+      "boost" : 1.0
+    }
+},
+  "_source" : ["title","summary","publisher", "num_reviews"]
+  
+  
+
+}
+
+
+---------------------------------------------
+Function Score: Field Value Factor
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "function_score": {
+            "query": {
+                "multi_match" : {
+                    "query" : "search engine",
+                    "fields": ["title", "summary"]
+                }
+            },
+            "field_value_factor": {
+                "field" : "num_reviews",
+                "modifier": "log1p",
+                "factor" : 2
+            }
+        }
+    },
+    "_source": ["title", "summary", "publish_date", "num_reviews"]
+}
+
+
+
+
+
 #term query
 #term internally uses tokenizer with lowercase filter
 #curl query

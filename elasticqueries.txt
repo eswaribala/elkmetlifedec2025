@@ -1,0 +1,224 @@
+#term query
+#term internally uses tokenizer with lowercase filter
+#curl query
+curl  --cacert /tmp/ca.crt -u elastic:changeme  -H "Content-Type: application/x-ndjson" -XGET "https://localhost:9200/orders/_search?pretty" -d ' { "query": {
+"range": {
+  "lines.amount": {
+    "gte": 10,
+    "lte": 60
+  }
+}
+
+} } '
+
+GET orders/_search
+{
+"query": {
+"range": {
+  "purchased_at": {
+    "gte": "now-1d/d"
+    
+  }
+}
+
+}
+
+}
+
+GET orders/_search
+{
+"query": {
+"term": {
+    "status": {
+      "value": "NUL"
+    }
+  }
+}
+
+}
+
+
+GET orders/_search
+{
+"query": {
+"range": {
+  "purchased_at": {
+    "gte": "2016-10-01"
+    
+  }
+}
+
+}
+
+}
+
+GET bulkbooks/_search
+{
+"query": {
+"match": {
+    "summary": "text using approaches real-time"
+  }
+}
+}
+
+GET bulkbooks/_search
+{
+"query": {
+"term": {
+    "publisher": {
+      "value": "manning"
+    }
+  }
+}
+}
+
+#terms query
+GET bulkbooks/_search
+{
+"query": {
+"terms": {
+   "publish_date": [
+     "2013-01-24",
+     "2014-04-05"
+   ]
+ }
+
+}
+}
+
+GET bulkbooks/_search
+{
+"query": {
+"terms": {
+   "publisher": [
+     "oreilly",
+     "manning"
+   ]
+ }
+
+}
+}
+
+#search by ids
+GET bulkbooks/_search
+{
+"query": {
+"ids": {
+  "values": ["1","3"]
+}
+}
+}
+GET bulkproducts/_search
+{
+"query": {
+"ids": {
+  "values": ["900", "500"]
+}
+}
+}
+
+#range query
+GET bulkbooks/_search
+{
+"query": {
+"range": {
+    "num_reviews": {
+      "gte": 12,
+      "lte": 20
+    }
+  }
+}
+}
+GET orders/_search
+{
+"query": {
+"range": {
+  "purchased_at": {
+    "gte": "2016-10-14T11:44:29Z||-2m"
+    
+  }
+}
+
+}
+
+}
+
+
+
+#field existence
+GET bulkbooks/_search
+{
+"query": {
+"exists": {
+  "field": "authors"
+}
+}
+}
+#field with keyword search using prefix
+GET bulkbooks/_search
+{
+"query": {
+"prefix": {
+    "summary.keyword": {
+      "value": "build"
+    }
+  }
+}
+}
+
+GET bulkbooks/_search
+{
+"query": {
+"prefix": {
+    "title.keyword": {
+      "value": "Taming"
+    }
+  }
+}
+}
+
+#wild card search
+GET bulkbooks/_search
+{
+"query": {
+"wildcard": {
+    "publisher.keyword": {
+      "value": "*y"
+    }
+  }
+}
+
+}
+#regular expression to search
+#Can only use regexp queries on keyword and text fields
+GET bulkbooks/_search
+{
+"query": {
+"regexp": {
+    "publisher": "[a-z]*"
+  }
+
+}
+}
+
+#phrase query 
+
+GET bulkreceipes/_search
+{
+"query": {
+"match_phrase": {
+    "description": "Cherry tomatoes are almost always sweeter"
+  }
+}
+}
+
+#multi field search query
+GET bulkreceipes/_search
+{
+"query": {
+"multi_match": {
+    "query": "pasta",
+    "fields": ["title","description"]
+  }
+}
+}

@@ -44,3 +44,46 @@ PUT customanalyzer
     }
   }
 }
+====================
+PUT apm_index
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_email_analyzer": {
+          "type":      "pattern",
+          "pattern":   "\\@|_", 
+          "lowercase": true
+        }
+      }
+    }
+  }
+}
+
+POST apm_index/_analyze
+{
+  "analyzer": "my_email_analyzer",
+  "text": "Parameswaribala@gmail.com"
+}
+
+
+PUT apm_index_v1
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "date_analyzer": {
+          "type":      "pattern",
+          "pattern":   "\\/|_", 
+          "lowercase": true
+        }
+      }
+    }
+  }
+}
+
+POST apm_index_v1/_analyze
+{
+  "analyzer": "date_analyzer",
+  "text": "I have booked the ticket on 2025/12/27"
+}

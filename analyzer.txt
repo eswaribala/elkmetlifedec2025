@@ -1,0 +1,46 @@
+PUT pattern_index_v1
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_email_analyzer": {
+          "type":      "pattern",
+          "pattern":   "\\@|_", 
+          "lowercase": true
+        }
+      }
+    }
+  }
+}
+
+POST pattern_index_v1/_analyze
+{
+  "analyzer": "my_email_analyzer",
+  "text": "John_Smith@foo-bar.com"
+}
+=================================================
+PUT customanalyzer
+{
+  "settings": {
+    
+    "analysis": {
+      
+      "analyzer": {
+        
+        "training_analyzer":{
+          "tokenizer":"standard",
+        "char_filter":["credit-card-filter"]
+        }
+        
+      },
+      "char_filter": {
+        "credit-card-filter":{
+          "type":"pattern_replace",
+          "pattern":"(\\d)+-(?=\\d)",
+          "replacement":"$1_"
+          
+        }
+      }
+    }
+  }
+}

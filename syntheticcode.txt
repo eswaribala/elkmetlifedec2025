@@ -1,0 +1,3 @@
+step('Go to https://vebdental-care.com/', async () => {
+  await page.goto('https://vebdental-care.com/');
+});

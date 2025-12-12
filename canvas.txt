@@ -1,0 +1,18 @@
+.canvasRenderEl {
+
+}
+.canvasMarkdown h1 {
+font-size: 36px;
+    font-weight: bold;
+    background-image: linear-gradient(to right,blue,navy,green,yellow);
+    background-clip: text;
+    color: transparent;
+
+}
+.canvasMarkdown h2,
+.canvasMarkdown p {
+color: navy;
+}
+.canvasMarkdown p {
+font-size: 12px;
+}

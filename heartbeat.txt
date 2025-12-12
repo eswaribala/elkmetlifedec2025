@@ -1,0 +1,18 @@
+heartbeat01:
+    image: docker.elastic.co/beats/heartbeat:8.7.1
+    container_name: heartbeat
+    user: root
+    depends_on:
+      - es01
+      - kibana
+    environment:
+      - ELASTIC_HOSTS=https://es01:9200
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - certs:/usr/share/heartbeat/certs:ro     # <-- Correct: use the Docker volume
+      - ./heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+  
+     
+    
+    command: ["--strict.perms=false"]

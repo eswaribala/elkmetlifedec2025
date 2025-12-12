@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "9411:9411"     # Zipkin endpoint (Collector uses this)
+    expose:
+      - "4317"          # OTLP gRPC available INSIDE Docker network
+      - "4318"          # OTLP HTTP (optional)
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+networks:
+  default:
+    name: elastic
+    external: false

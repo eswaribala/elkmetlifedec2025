@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>RUM Demo</title>
+
+  <!-- Load Elastic RUM agent from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@elastic/apm-rum@latest/dist/bundles/elastic-apm-rum.umd.min.js" crossorigin></script>
+
+  <script>
+    elasticApm.init({
+      serviceName: 'frontend-rum',        // must match allowed_services if you restrict it
+      serverUrl: 'http://host.docker.internal:8200', // APM server URL (browser -> Docker)
+      environment: 'dev',
+      // optional:
+      pageLoadTransactionName: 'RUM Demo Page'
+    });
+  </script>
+</head>
+<body>
+  <h1>Elastic RUM Demo</h1>
+  <button onclick="doSlowThing()">Click me</button>
+  <script>
+    function doSlowThing() {
+      setTimeout(() => {
+        console.log("Slow work done");
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

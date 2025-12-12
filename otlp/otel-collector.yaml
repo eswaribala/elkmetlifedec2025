@@ -1,0 +1,31 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+processors:
+  batch: {}
+
+exporters:
+  # Only send to Elastic APM
+  otlp:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+   # To Elastic APM Server (OTLP HTTP)
+  otlphttp:
+    endpoint: "http://apm-server:8200"   # base URL, collector will call /v1/traces
+    tls:
+      insecure_skip_verify: true
+    # If APM Server uses a secret token, uncomment:
+    # headers:
+    #   Authorization: "Bearer YOUR_SECRET_TOKEN"
+  
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp,otlphttp]

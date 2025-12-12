@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.94.0
+    container_name: otel-collector
+    command: ["--config=/etc/otel/otel-collector.yaml"]
+    volumes:
+      - ./otel-collector.yaml:/etc/otel/otel-collector.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+       
+networks:
+  default:
+    name: elastic
+    external: true

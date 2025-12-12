@@ -1,0 +1,42 @@
+heartbeat.monitors:
+  - type: http
+    id: elasticsearch-health
+    name: Elasticsearch HTTP Health Check
+    hosts: ["http://host.docker.internal:9200"]
+    schedule: "@every 10s"
+    timeout: 5s
+
+  - type: tcp
+    id: ping-kibana
+    name: Kibana Port Check
+    hosts: ["kibana:5601"]
+    schedule: "@every 10s"
+    timeout: 5s
+
+  - type: icmp
+    id: ping-gateway
+    name: Ping Gateway
+    hosts: ["8.8.8.8"]
+    schedule: "@every 30s"
+    timeout: 5s
+setup.kibana:
+  host: ${KIBANA_HOSTS}
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD} 
+
+# ==============================
+# OUTPUT
+# ==============================
+output.elasticsearch:
+  hosts: ${ELASTIC_HOSTS}
+  username: "elastic"
+  password: "changeme"
+  ssl:
+    certificate_authorities: ["/usr/share/heartbeat/certs/ca/ca.crt"]
+    certificate: "/usr/share/heartbeat/certs/es01/es01.crt"
+    key: "/usr/share/heartbeat/certs/es01/es01.key"
+# Optional: Log locally too
+logging.level: info
+logging.to_files: true
+logging.files:
+  path: /usr/share/heartbeat/logs

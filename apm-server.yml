@@ -1,0 +1,32 @@
+apm-server:
+  host: "0.0.0.0:8200"
+
+  data_streams:
+    enabled: true
+# === Enable Real User Monitoring (RUM) ===
+apm-server.rum.enabled: true
+# Allow your front-end origins. For a lab, * is ok. For prod, put exact origins.
+apm-server.rum.allow_origins: 
+  - "http://localhost:5500"
+  - "http://127.0.0.1:5500"
+  - "*"
+apm-server.rum.allow_headers: ["*"]
+
+# (Optional, but recommended) RUM anonymous auth limits
+apm-server.auth.anonymous.rate_limit.event_limit: 300
+apm-server.auth.anonymous.rate_limit.ip_limit: 1000
+apm-server.auth.anonymous.allowed_services: ["frontend-rum"]
+
+output.elasticsearch:
+  hosts: ["https://es01:9200"]
+  username: "elastic"
+  password: "changeme"
+  ssl:
+    enabled: true
+    certificate_authorities: ["/usr/share/ca.crt"]
+
+kibana:
+  enabled: true
+  host: "http://kibana:5601"
+  username: "elastic"
+  password: "changeme"
